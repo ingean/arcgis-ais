@@ -5,13 +5,17 @@ require([
 ], function (Map, MapView, ImageryTileLayer) {
   const layer = new ImageryTileLayer({
     //url: "https://tiledimageservices.arcgis.com/V6ZHFr6zdgNZuVG0/arcgis/rest/services/NLDAS2011_daily_wind_magdir/ImageServer",
-    url: "https://tiledimageservices.arcgis.com/2JyTvMWQSnM2Vi8q/arcgis/rest/services/AIS_MagDir/ImageServer",
+    //url: "https://tiledimageservices.arcgis.com/2JyTvMWQSnM2Vi8q/arcgis/rest/services/AIS_MagDir/ImageServer",
+    url: "https://tiledimageservices.arcgis.com/2JyTvMWQSnM2Vi8q/arcgis/rest/services/fishnet_1km_conv_1000/ImageServer",
     title: "Ship traffic",
     renderer: {
       type: "animated-flow", // autocasts to new AnimatedFlowRenderer
       lineWidth: "2px",
       lineColor: [50, 120, 240],
-      density: 1
+      density: 1,
+      lineSpeed: 0.02,
+      fadeDuration: 0.5,
+      lineLength: 50
     },
     effect: "bloom(2, 0.5px, 0)"
   });

@@ -1,107 +1,129 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="initial-scale=1,maximum-scale=1,user-scalable=no"
-    />
-    <title>
-      AIS - Aggregated ship traffic
-    </title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>AIS-trafikk ved Utsira nord</title>
 
-    <link
-      rel="stylesheet"
-      href="https://js.arcgis.com/4.22/esri/themes/dark/main.css"
-    />
-    <script src="https://js.arcgis.com/4.22/"></script>
-    <script
-      type="module"
-      src="https://js.arcgis.com/calcite-components/1.0.0-beta.69/calcite.esm.js"
-    ></script>
-    <script
-      nomodule=""
-      src="https://js.arcgis.com/calcite-components/1.0.0-beta.69/calcite.js"
-    ></script>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://js.arcgis.com/calcite-components/1.0.0-beta.69/calcite.css"
-    />
+    <script src="https://js.arcgis.com/calcite-components/1.0.0-beta.76/calcite.esm.js" type="module"></script>
+    <link rel="stylesheet" href="https://js.arcgis.com/calcite-components/1.0.0-beta.76/calcite.css" />
+    <link rel="stylesheet" href="https://js.arcgis.com/4.22/esri/themes/dark/main.css"/>
+    <link rel="stylesheet" href="./css/main.css" />
 
-    <link
-      rel="stylesheet"
-      href="./css/main.css"
-    />
-    <script src="./js/main.js"></script>
-   
   </head>
-
   <body>
-    <div id="viewDiv"></div>
-    <calcite-card id="controls" class="calcite-theme-dark">
-      <div slot="title">Controls</div>
-      <calcite-label
-        >Line width
-        <calcite-slider
-          id="lineWidth"
-          min="0"
-          max="10"
-          value="2"
-          label-handles
-        ></calcite-slider>
-      </calcite-label>
-      <calcite-label
-        >Line color
-        <calcite-input
-          id="lineColor"
-          type="color"
-          value="#3278f0"
-        ></calcite-input>
-      </calcite-label>
-      <calcite-label
-        >Density
-        <calcite-slider
-          id="density"
-          min="0"
-          max="1"
-          value="1"
-          label-handles
-        ></calcite-slider>
-      </calcite-label>
-      <calcite-label
-        >Line length
-        <calcite-slider
-          id="lineLength"
-          min="0"
-          max="100"
-          value="50"
-          label-handles
-        ></calcite-slider>
-      </calcite-label>
-      <calcite-label
-        >Line speed
-        <calcite-slider
-          id="lineSpeed"
-          min="0"
-          max="0.1"
-          value="0.02"
-          label-handles
-        ></calcite-slider>
-      </calcite-label>
-      <calcite-label
-        >Fade duration
-        <calcite-slider
-          id="fadeDuration"
-          min="0"
-          max="1"
-          value="0.5"
-          label-handles
-        ></calcite-slider>
-      </calcite-label>
-      <calcite-label
-        >Effects enabled
-        <calcite-checkbox id="effectsEnabled" checked></calcite-checkbox>
-      </calcite-label>
-    </calcite-card>
+    <div class="calcite-theme-dark">
+      <calcite-loader active></calcite-loader>
+
+      <calcite-shell content-behind hidden>
+  
+        <h2 id="header-title" slot="header"></h2>
+  
+        <calcite-shell-panel slot="primary-panel" detached> 
+  
+          <calcite-action-bar slot="action-bar">
+            <calcite-action data-action-id="layers" icon="layers" text="Layers"></calcite-action>
+            <calcite-action data-action-id="basemaps" icon="basemap" text="Basemaps"></calcite-action>
+            <calcite-action data-action-id="legend" icon="legend" text="Legend"></calcite-action>
+            <calcite-action data-action-id="bookmarks" icon="bookmark" text="Bookmarks"></calcite-action>
+            <calcite-action data-action-id="filter" icon="filter" text="Filter"></calcite-action>
+            <calcite-action data-action-id="settings" icon="sliders" text="Settings"></calcite-action>
+          </calcite-action-bar>
+  
+          <!-- map-specific panels (each one provides a div for JS API widgets) -->
+          <calcite-panel heading="Layers" height-scale="l" width-scale="m" data-panel-id="layers" hidden>
+            <div id="layers-container"></div>
+          </calcite-panel>
+          <calcite-panel heading="Basemaps" height-scale="l" width-scale="m" data-panel-id="basemaps" hidden>
+            <div id="basemaps-container"></div>
+          </calcite-panel>
+          <calcite-panel heading="Legend" height-scale="l" width-scale="m" data-panel-id="legend" hidden>
+            <div id="legend-container"></div>
+          </calcite-panel>
+          <calcite-panel heading="Bookmarks" height-scale="l" width-scale="m" data-panel-id="bookmarks" hidden>
+            <div id="bookmarks-container"></div>
+          </calcite-panel>
+    
+          <calcite-panel heading="Filter" data-panel-id="filter" hidden>
+            <calcite-label>
+              Type fartøy
+              <calcite-button id="flowAllLayer">Alle</calcite-button>
+              <calcite-button id="flowSupplyLayer" apperance="clear">Supply</calcite-button>
+            </calcite-label>
+          </calcite-panel>
+      
+          <!-- Controls for animated flow layer -->
+          <calcite-panel heading="Settings" data-panel-id="settings" hidden>
+            <div slot="title">Controls</div>
+            <calcite-label
+              >Line width
+              <calcite-slider
+                id="lineWidth"
+                min="0"
+                max="10"
+                value="2"
+                label-handles
+              ></calcite-slider>
+            </calcite-label>
+            <calcite-label
+              >Line color
+              <calcite-input
+                id="lineColor"
+                type="color"
+                value="#3278f0"
+              ></calcite-input>
+            </calcite-label>
+            <calcite-label
+              >Density
+              <calcite-slider
+                id="density"
+                min="0"
+                max="1"
+                value="1"
+                label-handles
+              ></calcite-slider>
+            </calcite-label>
+            <calcite-label
+              >Line length
+              <calcite-slider
+                id="lineLength"
+                min="0"
+                max="100"
+                value="50"
+                label-handles
+              ></calcite-slider>
+            </calcite-label>
+            <calcite-label
+              >Line speed
+              <calcite-slider
+                id="lineSpeed"
+                min="0"
+                max="0.1"
+                value="0.02"
+                label-handles
+              ></calcite-slider>
+            </calcite-label>
+            <calcite-label
+              >Fade duration
+              <calcite-slider
+                id="fadeDuration"
+                min="0"
+                max="1"
+                value="0.5"
+                label-handles
+              ></calcite-slider>
+            </calcite-label>
+            <calcite-label
+              >Effects enabled
+              <calcite-checkbox id="effectsEnabled" checked></calcite-checkbox>
+            </calcite-label>
+          </calcite-panel>
+  
+        </calcite-shell-panel>
+  
+        <div id="viewDiv"></div>
+  
+      </calcite-shell>
+    </div>
   </body>
+  <script type="module" src="js/main.js"></script>
 </html>

@@ -28,6 +28,7 @@ const colorRamp = new MultipartColorRamp({
 });
 
 export function createFlowGroupLayer(title, urlCount, urlMagDir) {
+  
   const countLayer = new ImageryTileLayer({
     title: "Trafikkmengde",
     url: urlCount,
@@ -35,8 +36,9 @@ export function createFlowGroupLayer(title, urlCount, urlMagDir) {
       colorRamp,
       "computeGamma": false,
       "gamma": [1],
-      "useGamma": false,
-      "stretchType": "min-max",
+      "useGamma": true,
+      "stretchType": "standard-deviation",
+      "numberOfStandardDeviations": 2,
       "type": "raster-stretch"
     }
   });

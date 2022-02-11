@@ -12,3 +12,17 @@ body,
   max-height: 90vh;
   overflow: auto;
 }
+
+#header-title {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+#info-content {
+  padding: 0.75rem;
+}
+
+[data-panel-id="filter"],
+[data-panel-id="settings"] {
+  padding: 0.75rem;
+}

@@ -1,24 +1,33 @@
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>AIS-trafikk ved Utsira nord</title>
+    <link rel="icon" type="image/png" href="./images/geodata-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="./images/geodata-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="./images/geodata-96x96.png" sizes="96x96">
 
     <script src="https://js.arcgis.com/calcite-components/1.0.0-beta.76/calcite.esm.js" type="module"></script>
     <link rel="stylesheet" href="https://js.arcgis.com/calcite-components/1.0.0-beta.76/calcite.css" />
-    <link rel="stylesheet" href="https://js.arcgis.com/4.22/esri/themes/dark/main.css"/>
+    
+    <!--link rel="stylesheet" href="https://js.arcgis.com/4.22/@arcgis/core/assets/esri/themes/light/main.css" /-->
+    <link rel="stylesheet" href="https://js.arcgis.com/4.22/@arcgis/core/assets/esri/themes/dark/main.css" />
+  
     <link rel="stylesheet" href="./css/main.css" />
-
   </head>
   <body>
     <div class="calcite-theme-dark">
-      <calcite-loader active></calcite-loader>
 
-      <calcite-shell content-behind hidden>
+      <calcite-shell content-behind>
+
+        <h2 id="header-title" slot="header">
+          <!--dynamically populated-->
+        </h2>
   
-        <h2 id="header-title" slot="header"></h2>
-  
-        <calcite-shell-panel slot="primary-panel" detached> 
+        <calcite-loader active></calcite-loader>
+
+        <calcite-shell-panel slot="primary-panel" detached>
   
           <calcite-action-bar slot="action-bar">
             <calcite-action data-action-id="layers" icon="layers" text="Layers"></calcite-action>
@@ -32,18 +41,45 @@
           <calcite-panel heading="Layers" height-scale="l" width-scale="m" data-panel-id="layers" hidden>
             <div id="layers-container"></div>
           </calcite-panel>
+          <calcite-panel heading="Basemaps" height-scale="l" width-scale="m" data-panel-id="basemaps" hidden>
+            <div id="basemaps-container"></div>
+          </calcite-panel>
           <calcite-panel heading="Legend" height-scale="l" width-scale="m" data-panel-id="legend" hidden>
             <div id="legend-container"></div>
           </calcite-panel>
           <calcite-panel heading="Bookmarks" height-scale="l" width-scale="m" data-panel-id="bookmarks" hidden>
             <div id="bookmarks-container"></div>
           </calcite-panel>
+          <calcite-panel heading="Print" height-scale="l" width-scale="m" data-panel-id="print" hidden>
+            <div id="print-container"></div>
+          </calcite-panel>
           <calcite-panel heading="Filter" data-panel-id="filter" hidden>
-            <calcite-label>
-              Type fartøy
-              <calcite-button id="flowAllLayer">Alle</calcite-button>
-              <calcite-button id="flowSupplyLayer" apperance="clear">Supply</calcite-button>
-            </calcite-label>
+            <calcite-pick-list class="filter-list">
+              <calcite-pick-list-item label="Alle" description="Ca 75 mill observasjoner" value="0" selected>
+                  <calcite-action slot="actions-end" icon="layer"></calcite-action>
+              </calcite-pick-list-item>
+              <calcite-pick-list-item label="Supplybåter" description="9.6 totalt 75 mill observasjoner" value="1">
+                  <calcite-action slot="actions-end" icon="layer"></calcite-action>
+              </calcite-pick-list-item>
+              <calcite-pick-list-item label="Fiskebåter" description="6.7 totalt 75 mill observasjoner" value="2">
+                <calcite-action slot="actions-end" icon="layer"></calcite-action>
+              </calcite-pick-list-item>
+              <calcite-pick-list-item label="Slepebåter" description="1.5 av totalt 75 mill observasjoner" value="3">
+                  <calcite-action slot="actions-end" icon="layer"></calcite-action>
+              </calcite-pick-list-item>
+              <calcite-pick-list-item label="Tankbåter" description="9.0 av totalt 75 mill observasjoner" value="4">
+                <calcite-action slot="actions-end" icon="layer"></calcite-action>
+              </calcite-pick-list-item>
+              <calcite-pick-list-item label="Passasjerbåter" description="13.0 av totalt 75 mill observasjoner" value="5">
+                <calcite-action slot="actions-end" icon="layer"></calcite-action>
+              </calcite-pick-list-item>
+              <calcite-pick-list-item label="Lastebåter" description="25.5 av totalt 75 mill observasjoner" value="6">
+                <calcite-action slot="actions-end" icon="layer"></calcite-action>
+              </calcite-pick-list-item>
+              <calcite-pick-list-item label="Annet" description="10.4 av totalt 75 mill observasjoner" value="7">
+                <calcite-action slot="actions-end" icon="layer"></calcite-action>
+              </calcite-pick-list-item>
+            </calcite-pick-list>
           </calcite-panel>
       
           <!-- Controls for animated flow layer -->
@@ -112,13 +148,16 @@
               <calcite-checkbox id="effectsEnabled" checked></calcite-checkbox>
             </calcite-label>
           </calcite-panel>
+          
   
         </calcite-shell-panel>
   
         <div id="viewDiv"></div>
   
       </calcite-shell>
+  
     </div>
   </body>
-  <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/main.js"> 
+  </script>
 </html>

@@ -1,11 +1,9 @@
+import ImageryTileLayer from "https://js.arcgis.com/4.22/@arcgis/core/layers/ImageryTileLayer.js"
+import GroupLayer from "https://js.arcgis.com/4.22/@arcgis/core/layers/GroupLayer.js"
+import MultipartColorRamp from "https://js.arcgis.com/4.22/@arcgis/core/rest/support/MultipartColorRamp.js"
+import AlgorithmicColorRamp from "https://js.arcgis.com/4.22/@arcgis/core/rest/support/AlgorithmicColorRamp.js"
+import Color from "https://js.arcgis.com/4.22/@arcgis/core/Color.js"
 
-  import ImageryTileLayer from "https://js.arcgis.com/4.22/@arcgis/core/layers/ImageryTileLayer.js"
-  import GroupLayer from "https://js.arcgis.com/4.22/@arcgis/core/layers/GroupLayer.js"
-  import MultipartColorRamp from "https://js.arcgis.com/4.22/@arcgis/core/rest/support/MultipartColorRamp.js"
-  import AlgorithmicColorRamp from "https://js.arcgis.com/4.22/@arcgis/core/rest/support/AlgorithmicColorRamp.js"
-  import Color from "https://js.arcgis.com/4.22/@arcgis/core/Color.js"
-
-  
 const colorRamp = new MultipartColorRamp({
   colorRamps: [
     new AlgorithmicColorRamp({
@@ -27,8 +25,7 @@ const colorRamp = new MultipartColorRamp({
   ]
 });
 
-export function createFlowGroupLayer(title, urlCount, urlMagDir) {
-  
+function create(title, urlCount, urlMagDir, visible) {
   const countLayer = new ImageryTileLayer({
     title: "Trafikkmengde",
     url: urlCount,
@@ -61,7 +58,17 @@ export function createFlowGroupLayer(title, urlCount, urlMagDir) {
   return new GroupLayer({
     title: title,
     effect: "bloom(2, 0.5px, 0.0)", // apply bloom effect to make the colors pop
-    layers: [countLayer, magDirLayer]
-  });
+    layers: [countLayer, magDirLayer],
+    visible: visible
+  })
 }
-  
+
+export default class AnimatedFlowGroupLayer {
+  constructor(title, urlMagnitude, urlMagnitudeDirection, visible = true) {
+    this.title = title
+    this.urlMagnitude = urlMagnitude
+    this.urlMagnitudeDirection = urlMagnitudeDirection
+    this.colorRamp = colorRamp
+    return create(title, urlMagnitude, urlMagnitudeDirection, visible)
+  }
+}

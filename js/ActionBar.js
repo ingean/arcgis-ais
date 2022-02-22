@@ -28,40 +28,38 @@ const handleActionBarClick = ({ target }) => {
 export default class ActionBar {
   constructor(view) {
     this.view = view
-    this.init()
+    init(view)
   }
+}
 
-  // Methods
-  init() {
-    let view = this.view
-    document.querySelector("calcite-action-bar").addEventListener("click", handleActionBarClick)
-    view.ui.move("zoom", "bottom-right")
+const init = (view) => {
+  document.querySelector("calcite-action-bar").addEventListener("click", handleActionBarClick)
+  view.ui.move("zoom", "bottom-right")
 
-    const basemaps = new BasemapGallery({
-      view,
-      container: "basemaps-container"
-    })
-    const bookmarks = new Bookmarks({
-      view,
-      container: "bookmarks-container"
-    })
-    const layerList = new LayerList({
-      view,
-      selectionEnabled: true,
-      container: "layers-container"
-    })
-    const legend = new Legend({
-      view,
-      container: "legend-container"
-    })
-    const print = new Print({
-      view,
-      container: "print-container"
-    })
-    const fullscreen = new Fullscreen({
-      view: view
-    });
-    view.ui.add(fullscreen, "top-right")
-  }
+  const basemaps = new BasemapGallery({
+    view,
+    container: "basemaps-container"
+  })
+  const bookmarks = new Bookmarks({
+    view,
+    container: "bookmarks-container"
+  })
+  const layerList = new LayerList({
+    view,
+    selectionEnabled: true,
+    container: "layers-container"
+  })
+  const legend = new Legend({
+    view,
+    container: "legend-container"
+  })
+  const print = new Print({
+    view,
+    container: "print-container"
+  })
+  const fullscreen = new Fullscreen({
+    view: view
+  })
+  view.ui.add(fullscreen, "top-left")
 }
 
